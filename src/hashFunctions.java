@@ -3,8 +3,24 @@ import java.util.Scanner;
 
 public class hashFunctions {
 	//Linear Probing Hash Function using Division Method (HF1)
-	public static int HF1(int key){
-		return key % 50;
+	public static int HF1(int key, int[][] table){
+		int index = (key % 50);
+		int i = 0;
+		int probes = 0;
+		while (i < 50) {
+			if (table[index][0] == 0) {
+				table[index][0] = key;
+				table[index][1] = i;
+				return index;
+			}
+			else {
+				index = (index + 1) % 50;
+				i++;
+				probes ++;
+			}
+		}
+		table[index][1] = probes;
+		return -1; //if table is full returns -1
 	}
 
 
@@ -52,6 +68,17 @@ public class hashFunctions {
 			choice = scan.nextInt();
 			switch(choice){
 				case 1: System.out.println("Hash table resulted from HF1:\n");
+					for(int i=1; i<keys.length; i++) {
+						HF1(keys[i], table);
+					}
+				//print index, key and probes
+				System.out.println("Index\tKey\t\tProbes");
+				System.out.println("---------------------");
+				for(int i=0; i<50; i++){
+					System.out.println(i + "\t\t" + table[i][0] + "\t" + table[i][1]);
+				}
+				System.out.println("---------------------");
+				System.out.println("Sum of probe values = " + sumProbes(table));
 
 					break;
 				case 2:
