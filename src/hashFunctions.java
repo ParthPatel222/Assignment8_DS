@@ -6,7 +6,7 @@ public class hashFunctions {
 		int index = (key % 50); //division hash function
 		int i = 0;
 		int probes = 0;
-		while (true) { //loops until the key is inserted
+		while (i <= 50) { //loops until the key is inserted
 			if (table[index][0] == 0) { //if the index is empty, insert key
 				table[index][0] = key; //inserts key into table
 				table[index][1] = i; //inserts the number of probes into the second column of table
@@ -14,15 +14,33 @@ public class hashFunctions {
 			}
 			else {
 				index = (index + 1) % 50; //increments index
+				i++;
 				probes ++;
 			}
 		}
 		table[index][1] = probes;
+
+
 	}
 
-	public static void HF2(){
-		//Quadratic Probing Hash Function using Division Method (HF2)
-
+	//Quadratic Probing Hash Function using Division Method (HF2)
+	public static void HF2(int key, int[][] table) {
+		int index = (key % 50); //division hash function
+		int i = 1;
+		int probes = 0;
+		while (i <= 50) { //loops until the key is inserted
+			if (table[index][0] == 0) { //if the index is empty, insert key
+				table[index][0] = key; //inserts key into table
+				table[index][1] = i; //inserts the number of probes into the second column of table
+				break;
+			}
+			else {
+				index = (index + (i*i)) % 50; //increments index by i^2
+				i++;
+				probes ++;
+			}
+		}
+		table[index][1] = probes;
 	}
 
 	public static int sumProbes(int[][] table){
@@ -59,6 +77,7 @@ public class hashFunctions {
 					for(int i=1; i<keys.length; i++) { //insert keys into table
 						HF1(keys[i], table); //calls HF1
 					}
+
 				//print index, key and probes table
 				System.out.println("Index\tKey\t\tProbes");
 				System.out.println("---------------------");
@@ -70,6 +89,17 @@ public class hashFunctions {
 					break;
 
 				case 2:System.out.println("\nHash table resulted from HF2:\n");
+					for(int i=1; i<keys.length; i++) { //insert keys into table
+						HF2(keys[i], table); //calls HF2
+					}
+					//print index, key and probes table
+					System.out.println("Index\tKey\t\tProbes");
+					System.out.println("---------------------");
+					for(int i=0; i<50; i++){
+						System.out.println(i + "\t\t" + table[i][0] + "\t" + table[i][1]);
+					}
+					System.out.println("---------------------");
+					System.out.println("Sum of probe values = " + sumProbes(table)+ " probes\n");
 					break;
 
 				case 3:System.out.println("\nHash table resulted from HF3:\n");
